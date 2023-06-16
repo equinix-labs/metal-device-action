@@ -3030,6 +3030,7 @@ async function run() {
     let serverStatus = '';
     while (serverStatus !== 'active') {
       serverStatus = await checkStatus(serverId);
+      core.info(`Server Status: ${serverStatus}...`);
       await sleep(5000);
     }
     const ipAddress = await getIPAddress(serverId);

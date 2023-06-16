@@ -1,0 +1,29 @@
+name: 'Equinix Metal Server'
+description: 'Creates an Equinix metal server'
+inputs:
+  metal_auth_token:
+    description: 'API Key for Equinix Metal'
+    required: true
+  metal_project_id:
+    description: 'Project ID for Equinix Metal'
+    required: true
+  metro:
+    description: 'Metro for Equinix Metal'
+    required: true
+  plan:
+    description: 'Plan for Equinix Metal'
+    required: true
+  os:
+    description: 'OS for Equinix Metal'
+    required: true
+  user_data:
+    description: 'User data for Equinix Metal'
+    required: false
+    default: ''
+outputs:
+  ipaddress:
+    description: "IP address of the server"
+    value: ${{ steps.ipaddress.outputs.ipaddress }}
+runs:
+  using: 'node16'
+  main: 'index.js'

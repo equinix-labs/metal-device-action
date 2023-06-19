@@ -20,10 +20,14 @@ inputs:
     description: 'User data for Equinix Metal'
     required: false
     default: ''
+  provisioning_timeout:
+    description: 'How long to wait for provisioning to complete, in minutes'
+    default: '30'
 outputs:
+  serverid:
+    description: "UUID of the server"
   ipaddress:
     description: "IP address of the server"
-    value: ${{ steps.ipaddress.outputs.ipaddress }}
 runs:
   using: 'node16'
   main: 'index.js'

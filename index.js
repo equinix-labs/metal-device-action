@@ -11,6 +11,7 @@ const metro = core.getInput('metro', {required: true});
 const plan = core.getInput('plan', {required: true});
 const os = core.getInput('os', {required: true});
 const userData = core.getInput('user_data');
+const provisioning_timeout = core.getInput('provisioning_timeout');
 
 // Provision Server
 async function createServer() {
@@ -78,7 +79,7 @@ async function createServer() {
   }
 }
 
-async function checkStatus(serverId) {
+async function getStatus(serverId) {
   try {
     const serverStatus = await new Promise((resolve, reject) => {
       const options = {
@@ -180,24 +181,44 @@ async function getIPAddress(serverId) {
   }
 }
 
-function sleep(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms));
+async function sleep(ms) {
+  await new Promise(resolve => setTimeout(resolve, ms));
 }
 
 async function run() {
   try {
+    // Create Equinix Metal server
     const serverId = await createServer();
+
+    // Wait for server to become active
     let serverStatus = '';
-    while (serverStatus !== 'active') {
-      serverStatus = await checkStatus(serverId);
-      core.info(`Server Status: ${serverStatus}...`);
-      await sleep(5000);
+    const timeoutInMillis = provisioning_timeout * 60 * 1000;
+    const timeoutID = setTimeout(function () {
+      throw new Error(
+        `Device did not become active within ${provisioning_timeout} minutes.`
+      );
+    }, timeoutInMillis);
+    while (serverStatus != 'active') {
+      serverStatus = await getStatus(serverId);
+      if (serverStatus != 'active') {
+        core.info(`Server status: ${serverStatus}...`);
+        await sleep(5000);
+      }
     }
+    // Server is active, cancel timeout
+    clearTimeout(timeoutID);
+
+    // Get server IP Address
     const ipAddress = await getIPAddress(serverId);
+
+    // Set Github Action outputs
+    core.setOutput('serverid', serverId);
+    core.setOutput('ipaddress', ipAddress);
+
+    // Print server info
     core.info(
       `Equinix Server Provisioned!
       Device UUID: ${serverId}
-      Status: ${serverStatus}
       IP Address: ${ipAddress}`
     );
   } catch (error) {

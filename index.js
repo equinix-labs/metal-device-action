@@ -2,6 +2,8 @@ const https = require('https');
 const {URL} = require('url');
 const core = require('@actions/core');
 
+const userAgent = 'gh-action-device';
+
 // GitHub Actions Inputs
 const authToken = core.getInput('metal_auth_token', {required: true});
 const projectId = core.getInput('metal_project_id', {required: true});
@@ -37,7 +39,7 @@ async function createServer() {
       headers: {
         'Content-Length': data.length,
         'Content-Type': 'application/json',
-        'User-Agent': 'metal-github-runner-action',
+        'User-Agent': userAgent,
         'X-Auth-Token': authToken
       },
       method: 'POST'
@@ -84,7 +86,7 @@ async function checkStatus(serverId) {
         path: `/metal/v1/devices/${serverId}`,
         headers: {
           'Content-Type': 'application/json',
-          'User-Agent': 'metal-github-runner-action',
+          'User-Agent': userAgent,
           'X-Auth-Token': authToken
         },
         method: 'GET'
@@ -140,7 +142,7 @@ async function getIPAddress(serverId) {
         path: `/metal/v1/devices/${serverId}`,
         headers: {
           'Content-Type': 'application/json',
-          'User-Agent': 'metal-github-runner-action',
+          'User-Agent': userAgent,
           'X-Auth-Token': authToken
         },
         method: 'GET'

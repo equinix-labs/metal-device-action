@@ -132,6 +132,7 @@ async function getStatus(serverId) {
     return serverStatus;
   } catch (error) {
     core.setFailed(`Server provisioning failed: ${error.message}`);
+    return error;
   }
 }
 
@@ -178,6 +179,7 @@ async function getIPAddress(serverId) {
     return ipAddress;
   } catch (error) {
     core.setFailed(`Failed to get IP Address: ${error.message}`);
+    throw error;
   }
 }
 
@@ -223,6 +225,7 @@ async function run() {
     );
   } catch (error) {
     core.setFailed(`Failed to create server: ${error.message}`);
+    throw error;
   }
 }
 

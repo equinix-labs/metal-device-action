@@ -59,7 +59,7 @@ async function createServer() {
             const id = JSON.parse(response).id;
             resolve(id);
           } else {
-            error = `Provisioning Failed. HTTP Response: ${response}`;
+            error = new Error('Request Failed.\n' + `Response: ${response}`);
             reject(error);
           }
         });

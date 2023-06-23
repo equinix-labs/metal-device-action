@@ -59,7 +59,7 @@ async function createServer() {
             const id = JSON.parse(response).id;
             resolve(id);
           } else {
-            error = `Provisioning Failed. HTTP Response: ${response}`;
+            error = new Error('Request Failed.\n' + `Response: ${response}`);
             reject(error);
           }
         });
@@ -75,7 +75,8 @@ async function createServer() {
 
     return serverId;
   } catch (error) {
-    core.setFailed(`Server provisioning failed: ${error.message}`);
+    core.error(`Server provisioning failed: ${error.message}`);
+    throw error;
   }
 }
 
@@ -131,7 +132,8 @@ async function getStatus(serverId) {
 
     return serverStatus;
   } catch (error) {
-    core.setFailed(`Server provisioning failed: ${error.message}`);
+    core.error(`Server provisioning failed: ${error.message}`);
+    throw error;
   }
 }
 
@@ -177,7 +179,8 @@ async function getIPAddress(serverId) {
 
     return ipAddress;
   } catch (error) {
-    core.setFailed(`Failed to get IP Address: ${error.message}`);
+    core.error(`Failed to get IP Address: ${error.message}`);
+    throw error;
   }
 }
 

@@ -1,4 +1,4 @@
-# Equinix Metal Server Action
+# metal-device-action
 
 This Experimental GitHub Action sets up an Equinix Metal server that can be used to run code in your workflows.
 

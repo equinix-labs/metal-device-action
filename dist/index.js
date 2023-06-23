@@ -3067,7 +3067,6 @@ async function run() {
     );
   } catch (error) {
     core.setFailed(`Failed to create server: ${error.message}`);
-    throw error;
   }
 }
 

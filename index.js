@@ -4,17 +4,8 @@ const core = require('@actions/core');
 
 const userAgent = 'gh-action-device';
 
-// GitHub Actions Inputs
-const authToken = core.getInput('metal_auth_token', {required: true});
-const projectId = core.getInput('metal_project_id', {required: true});
-const metro = core.getInput('metro', {required: true});
-const plan = core.getInput('plan', {required: true});
-const os = core.getInput('os', {required: true});
-const userData = core.getInput('user_data');
-const provisioning_timeout = core.getInput('provisioning_timeout');
-
 // Provision Server
-async function createServer() {
+async function createServer(authToken, projectId, metro, os, plan, userData) {
   const data = JSON.stringify({
     metro,
     operating_system: os,
@@ -80,7 +71,7 @@ async function createServer() {
   }
 }
 
-async function getStatus(serverId) {
+async function getStatus(authToken, serverId) {
   try {
     const serverStatus = await new Promise((resolve, reject) => {
       const options = {
@@ -137,7 +128,7 @@ async function getStatus(serverId) {
   }
 }
 
-async function getIPAddress(serverId) {
+async function getIPAddress(authToken, serverId) {
   try {
     const ipAddress = await new Promise((resolve, reject) => {
       const options = {
@@ -190,8 +181,24 @@ async function sleep(ms) {
 
 async function run() {
   try {
+    // GitHub Actions Inputs
+    const authToken = core.getInput('metal_auth_token', {required: true});
+    const projectId = core.getInput('metal_project_id', {required: true});
+    const metro = core.getInput('metro', {required: true});
+    const plan = core.getInput('plan', {required: true});
+    const os = core.getInput('os', {required: true});
+    const userData = core.getInput('user_data');
+    const provisioning_timeout = core.getInput('provisioning_timeout');
+
     // Create Equinix Metal server
-    const serverId = await createServer();
+    const serverId = await createServer(
+      authToken,
+      projectId,
+      metro,
+      plan,
+      os,
+      userData
+    );
 
     // Wait for server to become active
     let serverStatus = '';
@@ -202,7 +209,7 @@ async function run() {
       );
     }, timeoutInMillis);
     while (serverStatus != 'active') {
-      serverStatus = await getStatus(serverId);
+      serverStatus = await getStatus(authToken, serverId);
       if (serverStatus != 'active') {
         core.info(`Server status: ${serverStatus}...`);
         await sleep(5000);
@@ -212,7 +219,7 @@ async function run() {
     clearTimeout(timeoutID);
 
     // Get server IP Address
-    const ipAddress = await getIPAddress(serverId);
+    const ipAddress = await getIPAddress(authToken, serverId);
 
     // Set Github Action outputs
     core.setOutput('serverid', serverId);

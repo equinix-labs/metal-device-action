@@ -2861,7 +2861,7 @@ async function createServer() {
     metro,
     operating_system: os,
     plan,
-    user_data: userData
+    userdata: userData
   });
 
   core.info(

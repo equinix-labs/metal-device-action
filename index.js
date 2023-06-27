@@ -10,7 +10,7 @@ async function createServer(authToken, projectId, metro, os, plan, userData) {
     metro,
     operating_system: os,
     plan,
-    user_data: userData
+    userdata: userData
   });
 
   core.info(

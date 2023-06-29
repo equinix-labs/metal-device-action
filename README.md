@@ -5,7 +5,7 @@ This Experimental GitHub Action sets up an Equinix Metal server that can be used
 > :bulb: See also:
 > - [equinix-metal-project](https://github.com/equinix-labs/metal-project-action) action
 > - [equinix-metal-sweeper](https://github.com/equinix-labs/metal-sweeper-action) action
-> - WIP [equinix-metal-github-action-runner](https://github.com/cprivitere/github-action-metal-runner) action
+> - [equinix-metal-github-action-runner](https://github.com/equinix-labs/metal-action-runner) action
 > - WIP [equinix-metal-github-actions-examples](https://github.com/equinix-labs/metal-actions-example) examples
 
 ## Inputs

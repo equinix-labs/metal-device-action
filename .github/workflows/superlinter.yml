@@ -32,15 +32,15 @@ jobs:
 
     ### Optional settings examples
 
-    # with:
-    ### For a DevOps-focused repository. Prevents some code-language linters from running
-    ### defaults to false
-    # devops-only: false
+    with:
+      ### For a DevOps-focused repository. Prevents some code-language linters from running
+      ### defaults to false
+      # devops-only: false
 
-    ### A regex to exclude files from linting
-    ### defaults to empty
-    filter-regex-exclude: dist/.*
+      ### A regex to exclude files from linting
+      ### defaults to empty
+      filter-regex-exclude: dist/.*
 
-    ### If you're using the 'prettier' javascript style with eslint linting set this to true
-    ### defaults to false
-    javascript-use-prettier: true
+      ### If you're using the 'prettier' javascript style with eslint linting set this to true
+      ### defaults to false
+      javascript-use-prettier: true

@@ -25,11 +25,11 @@ inputs:
     default: '30'
 outputs:
   serverid:
-    description: "UUID of the server"
+    description: 'UUID of the server'
   ipaddress:
-    description: "IP address of the server"
+    description: 'IP address of the server'
 runs:
-  using: 'node16'
+  using: 'node20'
   main: 'dist/index.js'
 branding:
   icon: 'server'
